@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お出かけリスト＋</title>
+  <link rel="stylesheet" href="styles/odekake.css">
+</head>
+
+<body>
+  <header>
+    <h2>お出かけリスト＋</h2>
+    <p>忘れ物ゼロで安心お出かけ</p>
+  </header>
+
+  <main>
+
+    <!-- カテゴリ一覧 -->
+    <section id="category-menu">
+      <h3>カテゴリを選択</h3>
+      <div class="category-container" id="category-container"></div>
+
+      <div id="add-category">
+        <input type="text" id="new-category-name" placeholder="新しいカテゴリ名を入力">
+        <button onclick="addCategory()">＋ カテゴリ追加</button>
+      </div>
+    </section>
+
+    <section id="school-days" style="display:none;">
+      <button onclick="goBack()">⬅ 戻る</button>
+      <h3 id="school-title"></h3>
+
+      <!-- 曜日タブ -->
+      <div id="school-tabs" class="category-container"></div>
+
+      <!-- 今日の持ち物 -->
+      <ul id="school-item-list"></ul>
+
+      <!-- 追加フォーム -->
+      <div id="add-item-school">
+        <input type="text" id="new-school-item" placeholder="持ち物を追加">
+        <button onclick="addSchoolItem()">＋ 追加</button>
+      </div>
+    </section>
+
+
+    <!-- 持ち物リスト画面 -->
+    <section id="item-lists" style="display: none;">
+      <button onclick="goBack()">⬅ 戻る</button>
+      <h3 id="category-title"></h3>
+      <ul id="item-list"></ul>
+
+      <div id="add-item">
+        <input type="text" id="new-item" placeholder="新しい持ち物を追加">
+        <button onclick="addItem()">＋ 追加</button>
+      </div>
+      <button onclick="deleteCategory()">🗑️ このカテゴリを削除</button>
+    </section>
+
+    <!-- 天気予報エリア -->
+    <section id="weather-section">
+      <h3>今日の天気</h3>
+      <p id="weather-info">天気を読み込み中...</p>
+    </section>
+  </main>
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKJETDI5bBeeQmPkDUH7LH1rK13NOBYoo",
+      authDomain: "mytest-7418.firebaseapp.com",
+      projectId: "mytest-7418",
+      storageBucket: "mytest-7418.firebasestorage.app",
+      messagingSenderId: "991159330285",
+      appId: "1:991159330285:web:385fe28aea8d9c4df1f3e4"
+    };
+    // 🔥 Firebase初期化
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 他の関数で使えるように window に登録
+    window.db = db;
+    window.setDoc = setDoc;
+    window.getDoc = getDoc;
+    window.doc = doc;
+    window.updateDoc = updateDoc;
+  </script>
+
+  <script src="odekake.js"></script>
+</body>
+
+</html>
