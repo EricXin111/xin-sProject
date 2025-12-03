@@ -1,1 +1,3 @@
-const API_KEY = "c70048f541c42691d2a087e6b869a067"
+const API_KEY = "c70048f541c42691d2a087e6b869a067";
+
+console.log("config.js loaded!");
