@@ -1,6 +1,24 @@
+// 🔓 グローバルに登録
+window.loadWeather = loadWeather;
+window.showWeather = showWeather;
+window.addCategory = addCategory;
+window.renderCategories = renderCategories;
+window.showList = showList;
+window.goBack = goBack;
+window.addItem = addItem;
+window.addSchoolItem = addSchoolItem;
+window.deleteCategory = deleteCategory;
+window.logout = logout;
+
+function logout() {
+  signOut(auth).then(() => {
+    location.href = "login.html";
+  });
+}
+
 async function loadWeather() {
 
-  const apiKey = API_KEY;
+  const apiKey = "c70048f541c42691d2a087e6b869a067";
   const city = "Osaka,JP";
 
   const currentUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&lang=ja&units=metric`;

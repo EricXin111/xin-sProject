@@ -29,6 +29,34 @@ header p {
   opacity: 0.9;
 }
 
+header {
+  display: flex;
+  justify-content: center; /* タイトルを中央 */
+  align-items: center;
+  padding: 10px 15px;
+  position: relative; /* ボタンの位置を絶対指定できる */
+}
+
+/* ログアウトボタンを右上に小さく表示 */
+header button {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent; /* 背景なし */
+  padding: 5px;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: whitesmoke;
+}
+
+/* アイコンホバー時の動き */
+header button:hover {
+  color: #ff4e4e;
+}
+
+
 /* ☀️ 天気表示エリア */
 #weather-section {
   background: #ecf1ec;

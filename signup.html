@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>アカウント作成</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #e6f2ff;
+        }
+
+        .card {
+            width: 340px;
+            padding: 30px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0099e4;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        button:hover {
+            background: #0077b8;
+        }
+
+        p {
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
+
+        a {
+            color: #0099e4;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>アカウント作成</h2>
+        <input type="email" id="email" placeholder="メールアドレス">
+        <input type="password" id="password" placeholder="パスワード">
+        <button id="signupBtn">作成</button>
+
+        <p>すでにアカウントある？ <a href="login.html">ログイン</a></p>
+        <p id="message" style="color:red;"></p>
+    </div>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword }
+            from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKJETDI5bBeeQmPkDUH7LH1rK13NOBYoo",
+            authDomain: "mytest-7418.firebaseapp.com",
+            projectId: "mytest-7418",
+            storageBucket: "mytest-7418.appspot.com",
+            messagingSenderId: "991159330285",
+            appId: "1:991159330285:web:385fe28aea8d9c4df1f3e4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById("signupBtn").onclick = () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    window.location.href = "index.html"; // ユーザー作成後に移動
+                })
+                .catch((e) => {
+                    document.getElementById("message").textContent =
+                        "エラー：" + e.message;
+                });
+        };
+    </script>
+
+</body>
+
+</html>
