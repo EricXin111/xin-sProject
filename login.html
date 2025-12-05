@@ -98,15 +98,14 @@
 
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    console.log("ログイン成功🎉");
-                    // ページ移動はしない！
-                    // ↑ そのまま index.html にユーザー自身で移動してもらうだけ！
+                    console.log("ログイン成功");
+                    window.location.href = "index.html"; 
                 })
                 .catch(e => {
                     document.getElementById("message").textContent =
                         "ログインできません：" + e.message;
                 });
-            }
+        }
     </script>
 
 </body>
