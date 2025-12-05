@@ -1,61 +1,63 @@
-body {
-  font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", sans-serif;
-  background: linear-gradient(135deg, #e8f5e9, #ffffff);
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
-
+/* 🔥 ヘッダーデザイン（PC & モバイル共通） */
 header {
   background-color: #4CAF50;
   color: white;
-  padding: 20px;
-  text-align: center;
-  /* box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); */
-  border-top-left-radius: 20px;
-  /* border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px; */
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 
+/* タイトル */
 header h2 {
   margin: 0;
   font-size: 26px;
+  white-space: nowrap;
 }
 
+/* サブタイトル */
 header p {
-  margin-top: 5px;
+  margin: 0;
   font-size: 14px;
   opacity: 0.9;
 }
 
-header {
-  display: flex;
-  justify-content: center; /* タイトルを中央 */
-  align-items: center;
-  padding: 10px 15px;
-  position: relative; /* ボタンの位置を絶対指定できる */
-}
-
-/* ログアウトボタンを右上に小さく表示 */
+/* ログアウトボタン */
 header button {
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent; /* 背景なし */
-  padding: 5px;
+  background: transparent;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   cursor: pointer;
-  color: whitesmoke;
+  color: #fff;
+  padding: 5px;
 }
 
-/* アイコンホバー時の動き */
 header button:hover {
   color: #ff4e4e;
 }
 
+/* 📱 スマホではサブタイトル非表示 + レイアウト最適化 */
+@media (max-width: 768px) {
+  header p {
+    display: none;
+  }
+
+  header h2 {
+    font-size: 1.2rem;
+  }
+
+  header button {
+    font-size: 1rem;
+    padding: 4px;
+  }
+
+  html, body {
+    overflow-x: hidden !important;
+    width: 100%;
+  }
+}
 
 /* ☀️ 天気表示エリア */
 #weather-section {
@@ -410,6 +412,67 @@ h3 {
 .checked-bg {
   background-color: #e0e0e0 !important; /* 背景色を薄くグレーに */
 }
+
+/* 📱 スマホ完全対応：横スクロール防止 & 幅調整 */
+@media (max-width: 768px) {
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  header {
+    padding: 10px 12px;
+  }
+
+  /* カテゴリ一覧を2列に揃える */
+  .category-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .category-card {
+    padding: 18px 6px;
+    font-size: 0.95rem;
+  }
+
+  /* 持ち物ページ */
+  #item-lists, #school-days {
+    width: 100% !important;
+    margin: 10px auto !important;
+    box-sizing: border-box;
+    padding: 12px !important;
+  }
+}
+
+/* 📱 スマホでもサブタイトル表示するバージョン */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column; /* ←縦並びにする */
+    gap: 3px;
+  }
+
+  header h2 {
+    font-size: 1.3rem;
+  }
+
+  header p {
+    display: block; /* ←スマホでも表示 */
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  header button {
+    align-self: flex-end; /* ←ボタンは右端 */
+  }
+}
+
 
 
 
