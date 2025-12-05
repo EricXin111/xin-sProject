@@ -473,6 +473,32 @@ h3 {
   }
 }
 
+footer {
+  text-align: center;
+  padding: 14px 10px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 0.85rem;
+  margin-top: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.footer-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.footer-links a {
+  font-size: 1.6rem;
+  color: white;
+  transition: all 0.2s ease;
+}
+.footer-links a:hover {
+  color: #ffeb3b;
+  transform: scale(1.2);
+}
+
 
 
 
