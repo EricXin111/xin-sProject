@@ -134,52 +134,45 @@ let currentCategory = null;
 // Firestoreに保存
 async function saveData() {
   try {
-    const docRef = doc(db, "users", "myList");
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("⚠ ユーザー未ログイン");
+      return;
+    }
+
+    const docRef = doc(db, "users", user.uid, "data", "myList");
     await setDoc(docRef, { items }, { merge: true });
     console.log("✅ Firestoreに保存しました");
   } catch (e) {
     console.error("❌ Firestore保存エラー:", e);
   }
 }
-// ① Firestoreに保存
+
 async function loadData() {
   try {
-    const docRef = doc(db, "users", "myList");
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("⚠ 未ログイン → 読み込み停止");
+      return;
+    }
+
+    const docRef = doc(db, "users", user.uid, "data", "myList");
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Firebaseにデータがある → 読み込みます");
+      console.log("Firebase にデータあり → 読み込みます");
       items = docSnap.data().items ?? {};
 
-      // 🔥 items が空なら曜日セットを作成して保存
       if (Object.keys(items).length === 0) {
-        console.log("Firebase の items が空 → 初期曜日セットを生成");
-
-        items = {
-          "学校": [],
-          "月曜日": [],
-          "火曜日": [],
-          "水曜日": [],
-          "木曜日": [],
-          "金曜日": []
-        };
-
-        await saveData(); // merge:true で上書きされない
+        console.log("items が空 → 初期セット生成");
+        items = defaultItems();
+        await saveData();
       }
 
     } else {
-      console.log("Firebaseにデータがない → 初期データ作成します");
-
-      items = {
-        "学校": [],
-        "月曜日": [],
-        "火曜日": [],
-        "水曜日": [],
-        "木曜日": [],
-        "金曜日": []
-      };
-
-      await saveData(); // merge:true で安全に保存
+      console.log("Firebaseにデータなし → 初期セット生成");
+      items = defaultItems();
+      await saveData();
     }
 
   } catch (e) {
@@ -187,6 +180,17 @@ async function loadData() {
   }
 }
 
+// 初期データ生成
+function defaultItems() {
+  return {
+    "学校": [],
+    "月曜日": [],
+    "火曜日": [],
+    "水曜日": [],
+    "木曜日": [],
+    "金曜日": []
+  };
+}
 
 function renderCategories() {
   const container = document.getElementById("category-container");
