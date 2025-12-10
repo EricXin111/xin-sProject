@@ -141,7 +141,7 @@ async function saveData() {
     }
 
     const docRef = doc(db, "users", user.uid, "data", "myList");
-    await setDoc(docRef, { items }, { merge: true });
+    await setDoc(docRef, { items: items });
     console.log("✅ Firestoreに保存しました");
   } catch (e) {
     console.error("❌ Firestore保存エラー:", e);
@@ -162,15 +162,8 @@ async function loadData() {
     if (docSnap.exists()) {
       console.log("Firebase にデータあり → 読み込みます");
       items = docSnap.data().items ?? {};
-
-      if (Object.keys(items).length === 0) {
-        console.log("items が空 → 初期セット生成");
-        items = defaultItems();
-        await saveData();
-      }
-
     } else {
-      console.log("Firebaseにデータなし → 初期セット生成");
+      console.log("初回ユーザー → 初期セット生成");
       items = defaultItems();
       await saveData();
     }
@@ -179,6 +172,7 @@ async function loadData() {
     console.error("❌ Firestore読み込みエラー:", e);
   }
 }
+
 
 // 初期データ生成
 function defaultItems() {
@@ -205,7 +199,6 @@ function renderCategories() {
     key !== "金曜日"
   );
 
-  // 学校を最初に、それ以外を後ろに
   const sorted = homeCategories.sort((a, b) => {
     if (a === "学校") return -1;
     if (b === "学校") return 1;
@@ -236,16 +229,37 @@ function renderCategories() {
 // ④ カテゴリ追加
 function addCategory() {
   const name = document.getElementById("new-category-name").value.trim();
-  if (name && !items[name]) {
-    items[name] = [];
-    document.getElementById("new-category-name").value = "";
-    saveData(); // ← 追加後に保存
-    renderCategories();
-  } else {
-    alert("カテゴリ名が空か、すでに存在します。");
-  }
-}
 
+  if (!name) {
+    alert("カテゴリ名を入力してください。");
+    return;
+  }
+
+  if (items[name]) {
+    alert("そのカテゴリはすでに存在します。");
+    return;
+  }
+
+  // ⭐「学校」という文字が含まれていたら学校カテゴリ扱い
+  const isSchool = name.includes("学校");
+
+  if (isSchool) {
+    items[name] = []; // 「学校」カテゴリ本体
+
+    const days = ["月曜日", "火曜日", "水曜日", "木曜日", "金曜日"];
+    days.forEach(day => {
+      if (!items[day]) items[day] = [];  // 曜日は存在しなければ作る
+    });
+
+  } else {
+    // ★ 通常カテゴリ
+    items[name] = [];
+  }
+
+  document.getElementById("new-category-name").value = "";
+  saveData();
+  renderCategories();
+}
 
 function getTodayLabel() {
   const week = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
@@ -256,7 +270,7 @@ function getTodayLabel() {
 // ⑤ カテゴリ内の持ち物表示
 function showList(category) {
 
-  if (category === "学校") {
+  if (category.includes("学校")) {
     openSchool();
     return;
   }
