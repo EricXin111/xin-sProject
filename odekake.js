@@ -43,10 +43,20 @@ async function loadWeather() {
 function showWeather(current, forecast) {
 
   // ① 今の天気
-  const nowWeather = current.weather[0].description;   // 例: 薄い雲
+  let nowWeather = current.weather[0].description;   // 例: 薄い雲
   const nowTemp = current.main.temp.toFixed(1);        // 小数1桁まで
 
   const nowMain = current.weather[0].main;             // "Rain" など
+    const naturalText = {
+    "曇りがち": "くもり",
+    "薄い雲": "くもり",
+    "厚い雲": "くもり",
+    "雲": "くもり",
+    "晴天": "晴れ",
+    "軽いにわか雨": "小雨"
+  };
+
+  nowWeather = naturalText[nowWeather] || nowWeather;
 
   // ② 今日の日付と現在時刻
   const now = new Date();
@@ -106,13 +116,15 @@ let bgClass = "weather-sunny"; // デフォルト晴れ
 if (
   nowMain === "Rain" ||
   nowMain === "Drizzle" ||
-  nowMain === "Thunderstorm" ||
-  nextRainTime
+  nowMain === "Thunderstorm"
 ) {
-  bgClass = "weather-rain";
+  bgClass = "weather-rain"; 
 } else if (nowMain === "Clouds") {
   bgClass = "weather-cloud";
+} else {
+  bgClass = "weather-sunny"; 
 }
+
 
 // ✨ HTML反映（デザイン付き）
 document.getElementById("weather-info").innerHTML = `
