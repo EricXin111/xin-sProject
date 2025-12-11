@@ -47,7 +47,7 @@ function showWeather(current, forecast) {
   const nowTemp = current.main.temp.toFixed(1);        // 小数1桁まで
 
   const nowMain = current.weather[0].main;             // "Rain" など
-    const naturalText = {
+  const naturalText = {
     "曇りがち": "くもり",
     "薄い雲": "くもり",
     "厚い雲": "くもり",
@@ -81,53 +81,47 @@ function showWeather(current, forecast) {
 
     const willRain =
       main === "Rain" ||
-      main === "Drizzle" ||
       main === "Thunderstorm" ||
-      pop >= 0.5 ||         // 50%以上で雨っぽい
-      rainAmount > 0.1;     // 少しでも降水量がある
-
-    if (willRain) {
-      nextRainTime = timeStr.slice(0, 5); // "HH:MM"
-      break;
-    }
+      rainAmount >= 0.5 ||   // 0.5mm 以上 → 雨と判定
+      (pop >= 0.7 && rainAmount >= 0.3); // 確率70%以上＋0.3mmで雨
   }
 
   // ④ 表示用メッセージを作る
-let advice = "";
+  let advice = "";
 
-if (
-  nowMain === "Rain" ||
-  nowMain === "Drizzle" ||
-  nowMain === "Thunderstorm"
-) {
-  // 今、もう雨
-  advice = "🌧 今は雨が降っています。外出の際は傘をお持ちください。";
-} else if (nextRainTime) {
-  // これから雨が降りそう
-  advice = `🌦 今日の ${nextRainTime} 頃から雨の予報です。お出かけの際は傘があると安心です。`;
-} else {
-  // 今日はほぼ雨の心配なし
-  advice = "☀ 今日は一日を通して大きな雨の予報はなさそうです。身軽にお出かけできます。";
-}
+  if (
+    nowMain === "Rain" ||
+    nowMain === "Drizzle" ||
+    nowMain === "Thunderstorm"
+  ) {
+    // 今、もう雨
+    advice = "🌧 今は雨が降っています。外出の際は傘をお持ちください。";
+  } else if (nextRainTime) {
+    // これから雨が降りそう
+    advice = `🌦 今日の ${nextRainTime} 頃から雨の予報です。お出かけの際は傘があると安心です。`;
+  } else {
+    // 今日はほぼ雨の心配なし
+    advice = "☀ 今日は一日を通して大きな雨の予報はなさそうです。身軽にお出かけできます。";
+  }
 
-// 🌈 カード背景デザインの切り替え
-let bgClass = "weather-sunny"; // デフォルト晴れ
+  // 🌈 カード背景デザインの切り替え
+  let bgClass = "weather-sunny"; // デフォルト晴れ
 
-if (
-  nowMain === "Rain" ||
-  nowMain === "Drizzle" ||
-  nowMain === "Thunderstorm"
-) {
-  bgClass = "weather-rain"; 
-} else if (nowMain === "Clouds") {
-  bgClass = "weather-cloud";
-} else {
-  bgClass = "weather-sunny"; 
-}
+  if (
+    nowMain === "Rain" ||
+    nowMain === "Drizzle" ||
+    nowMain === "Thunderstorm"
+  ) {
+    bgClass = "weather-rain";
+  } else if (nowMain === "Clouds") {
+    bgClass = "weather-cloud";
+  } else {
+    bgClass = "weather-sunny";
+  }
 
 
-// ✨ HTML反映（デザイン付き）
-document.getElementById("weather-info").innerHTML = `
+  // ✨ HTML反映（デザイン付き）
+  document.getElementById("weather-info").innerHTML = `
   <div class="weather-card ${bgClass}">
     <div class="weather-status">
       ${nowWeather}　${nowTemp}℃
